@@ -1,2 +1,7 @@
 'use strict';
-console.log('apollo -> online');
+
+$(document).ready(init);
+
+function init(){
+  
+}

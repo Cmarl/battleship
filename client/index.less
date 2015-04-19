@@ -1,0 +1,87 @@
+@import url(http://fonts.googleapis.com/css?family=Audiowide);
+body {
+  background-image: url('/assets/metal.jpg');
+}
+
+#title {
+  text-align: center;
+  font-size: 50px;
+  margin-top: -10px;
+  margin-left: -10px;
+  margin-right: -10px;
+  font-family: 'Audiowide', cursive;
+  letter-spacing: 3px;
+  background-color: rgba(0, 0, 0, 0.83);
+  color: #dfdfdf;
+}
+
+#user-setup {
+  text-align: center;
+
+  input {
+    height: 30px;
+    width: 200px;
+    background-color: rgba(0, 0, 0, 0.81);
+    font-family: 'Audiowide', cursive;
+    font-size: 20px;
+    padding: 10px;
+    margin: 20px;
+    color: #dcdcdc;
+  }
+  #ship-select, button {
+    height: 34px;
+    width: 100px;
+    background-color: rgba(0, 0, 0, 0.81);
+    color: #dcdcdc;
+    font-family: 'Audiowide', cursive;
+    font-size: 15px;
+    margin: 10px;
+    padding: 10px;
+  }
+
+  #ship-select {
+    height: 50px;
+    width: 200px;
+  }
+}
+
+button:hover {
+  background-color: rgba(40, 200, 0, 0.7);
+}
+
+#full-board {
+  text-align: center;
+}
+
+#player-board {
+  display: inline-block;
+  margin: 0px;
+  background-image: url('/assets/water.gif');
+  border-radius: 25px;
+  background-size: cover;
+  border: 15px solid rgb(0, 0, 0);
+
+  td {
+    border: 3px solid rgba(23, 126, 210, 0.87);
+    width: 70px;
+    height: 70px;
+  }
+}
+
+#radar {
+  display: inline-block;
+  margin: 0px;
+  background-image: url('/assets/radar.gif');
+  border-radius: 55px;
+  background-size: cover;
+  border: 15px solid rgb(0, 0, 0);
+  // filter: alpha(Opacity=70);
+  // opacity: 0.7;
+
+  td {
+    border: 3px solid rgba(255, 0, 21, 0.57);
+    border-radius: 85px;
+    width: 70px;
+    height: 70px;
+  }
+}

@@ -1,11 +1,41 @@
 doctype html
 html
   head
-    meta(charset='utf-8')      
+    meta(charset='utf-8')
     title Battleship
     link(rel='stylesheet', href='/vendor/font-awesome/css/font-awesome.min.css')
     link(rel='stylesheet', href=isProd ? '/index.min.css' : '/index.css')
   body
-
+    h1#title Battleship
+    #user-setup
+      input#username(type='text' placeholder='Username')
+      input#password(type='text' placeholder='Password')
+      button#login Log in
+      button#create-username New User
+      button#start Start Game
+      select#ship-select
+        option#carrier(data-n="5") Aircraft Carrier
+        option#battle(data-n="4") Battle Ship
+        option#destroyer(data-n="3") Destroyer
+        option#sub(data-n="3") Submarine
+        option#patrol(data-n="2") Patrol Ship
+    #player-info
+      #current-player
+    #full-board
+      table#player-board
+        thead
+          - for(var y = 9;y >= 0 ; y--)
+            tr
+              - for(var x = 0; x < 10; x++ )
+                td(data-x=x data-y=y)
+      table#radar
+        thead
+          - for(var y = 9;y >= 0 ; y--)
+            tr
+              - for(var x = 0; x < 10; x++ )
+                td(data-x=x data-y=y)
+    script(src='/vendor/firebase/firebase.js')
+    script(src='/vendor/jquery/dist/jquery.min.js')
     script(src='/vendor/lodash/lodash.min.js')
+    script(src='/vendor/moment/min/moment.min.js')
     script(src=isProd ? '/index.min.js' : '/index.js')

@@ -13,6 +13,26 @@ function init(){
   $('#login').click(loginPlayer);
   $('#create-username').click(createPlayer);
   $('#player-board td').click(addShip);
+  $('#start').click(playerReady);
+}
+
+function playerReady(){
+  pushChart();
+  $('#user-setup').css('display','none');
+}
+
+function pushChart(){
+  var positions = $('.ship').map(function(i,value){
+    var x = value.dataset.x;
+    var y = value.dataset.y;
+    return {x:x ,y:y };
+  });
+  shipCharts.push(positions);
+}
+
+function chartAdded(){
+  $('#player-board td').each(function(td){
+  });
 }
 
 function addShip(event){
@@ -52,16 +72,6 @@ function okayToPlace(startCoords,orientation,shipLength){
     isOkay = ((startCoords.y - (shipLength - 1)) >= 0) ? true : false;
   }
   return isOkay;
-}
-
-function pushChart(){
-
-}
-
-function chartAdded(){
-  $('#player-board td').each(function(td){
-    console.log(td);
-  });
 }
 
 function pushPlayer(player){

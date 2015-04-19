@@ -25,14 +25,14 @@ function pushChart(){
   var positions = $('.ship').map(function(i,value){
     var x = value.dataset.x;
     var y = value.dataset.y;
-    return {x:x ,y:y };
+    shipCharts.push({x:x,y:y}) ;
   });
+  console.log(positions);
   shipCharts.push(positions);
 }
 
 function chartAdded(){
-  $('#player-board td').each(function(td){
-  });
+
 }
 
 function addShip(event){

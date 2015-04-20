@@ -2,9 +2,12 @@
 
 $(document).ready(init);
 
-var root, shots, players, shipCharts, myPlayer, winner, myUid;
+var root, shots, players, shipCharts, myPlayer, myUid;
+var $boom;
+var boom = '/assets/boom.wav';
 
 function init(){
+  $boom = $('#boom');
   root = new Firebase('https://battleship-ng.firebaseio.com/');
   root.onDisconnect().remove();
   var winner = root.child('winner');
@@ -21,6 +24,8 @@ function init(){
   shots.on('child_added', shotsFired);
   winner.on('child_added', showWinner);
 }
+
+
 
 function showWinner(snapshot){
   alert(snapshot.winner+' wins the game!!');
@@ -41,6 +46,8 @@ function shotsFired(snapshot){
 function fireMissle(){
   var x = $(this).data('x');
   var y = $(this).data('y');
+  $boom.attr('src',boom);
+  $boom[0].play();
   if (($(this).hasClass('enemyship')) && (!($(this).hasClass((myUid.split(':').join('')))) || $(this).hasClass('simplelogin'+'*'))){
     $(this).addClass('boomboom');
     console.log('boom');
@@ -52,11 +59,13 @@ function fireMissle(){
   }
   if ($('.boomboom').length >= 17){
   alert('winner!!!!');
+
   }
 }
 
 function playerReady(){
   $('#user-setup').css('display','none');
+  $('#player-board td').off( 'click');
   pushChart();
   root.orderByValue().on('value',function(snapshot){console.log(snapshot.val());});
 
@@ -143,7 +152,7 @@ function loginPlayer(){
     password : pWord
   }, function(error, authData) {
     if (error) {
-      console.log('Login Failed!', error);
+      console.log('Meehhhhhhh!', error);
     } else {
       console.log('Authenticated successfully with payload:', authData);
     }

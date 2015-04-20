@@ -2,37 +2,81 @@
 
 $(document).ready(init);
 
-var root, players, shipCharts, myPlayer, myUid;
+var root, shots, players, shipCharts, myPlayer, winner, myUid;
 
 function init(){
   root = new Firebase('https://battleship-ng.firebaseio.com/');
+  root.onDisconnect().remove();
+  var winner = root.child('winner');
   players = root.child('players');
   players.on('child_added', playerAdded);
   shipCharts = root.child('shipCharts');
   shipCharts.on('child_added', chartAdded);
+  shots = root.child('shots');
   $('#login').click(loginPlayer);
   $('#create-username').click(createPlayer);
   $('#player-board td').click(addShip);
   $('#start').click(playerReady);
+  $('#radar td').click(fireMissle);
+  shots.on('child_added', shotsFired);
+  winner.on('child_added', showWinner);
+}
+
+function showWinner(snapshot){
+  alert(snapshot.winner+' wins the game!!');
+  root.remove();
+}
+
+function shotsFired(snapshot){
+  var player = snapshot.val().player;
+  var coords = {x: snapshot.val().x, y: snapshot.val().y};
+  console.log(player, coords);
+  if ((player !== myUid) && ($('#player-board td[data-x="'+coords.x+'"][data-y="'+coords.y+'"]').hasClass('enemyship'))){
+    $('#player-board td[data-x="'+coords.x+'"][data-y="'+coords.y+'"]').addClass('boomboom');
+  } else if ((player !== myUid) && (!$('#player-board td[data-x="'+coords.x+'"][data-y="'+coords.y+'"]').hasClass('enemyship'))){
+    $('#player-board td[data-x="'+coords.x+'"][data-y="'+coords.y+'"]').removeClass().css('background-color','red');
+  }
+}
+
+function fireMissle(){
+  var x = $(this).data('x');
+  var y = $(this).data('y');
+  if (($(this).hasClass('enemyship')) && (!($(this).hasClass((myUid.split(':').join('')))) || $(this).hasClass('simplelogin'+'*'))){
+    $(this).addClass('boomboom');
+    console.log('boom');
+    shots.push({player: myUid,x:x,y:y});
+  } else {
+    $(this).addClass('noboom');
+    console.log('no hit');
+    shots.push({player: myUid,x:x,y:y});
+  }
+  if ($('.boomboom').length >= 17){
+  alert('winner!!!!');
+  }
 }
 
 function playerReady(){
-  pushChart();
   $('#user-setup').css('display','none');
+  pushChart();
+  root.orderByValue().on('value',function(snapshot){console.log(snapshot.val());});
+
 }
 
 function pushChart(){
   var positions = $('.ship').map(function(i,value){
     var x = value.dataset.x;
     var y = value.dataset.y;
-    shipCharts.push({x:x,y:y}) ;
+    shipCharts.push({player: (myUid.split(':').join('')),x:x,y:y}) ;
   });
   console.log(positions);
   shipCharts.push(positions);
 }
 
-function chartAdded(){
-
+function chartAdded(snapshot){
+  var x = snapshot.val().x;
+  var y = snapshot.val().y;
+  var player = snapshot.val().player;
+  $('#radar td[data-x="'+x+'"][data-y="'+y+'"]').addClass('enemyship').addClass(player);
 }
 
 function addShip(event){
@@ -85,7 +129,7 @@ function pushPlayer(player){
 }
 
 function playerAdded(snapshot){
-  myPlayer = snapshot.val();
+  myPlayer = myPlayer ? myPlayer : snapshot.val();
   myUid = root.getAuth() ? root.getAuth().uid : '';
 }
 

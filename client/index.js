@@ -1,3 +1,5 @@
+/*var Firebase = true;*/
+
 'use strict';
 
 $(document).ready(init);
@@ -58,7 +60,7 @@ function fireMissle(){
     shots.push({player: myUid,x:x,y:y});
   }
   if ($('.boomboom').length >= 17){
-  alert('winner!!!!');
+  alert('winner!');
 
   }
 }
